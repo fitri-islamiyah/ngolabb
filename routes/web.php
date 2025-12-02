@@ -25,7 +25,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
-    Route::put('/profile/password/update', [ProfileController::class, 'updatePassword'])->name('password.update');
+    Route::put('/profile/password/update', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 
 
 
