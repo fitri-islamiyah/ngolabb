@@ -84,6 +84,11 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     ->name('toggle.admin.mode');
 
 
+    Route::get('/run-migrate', function () {
+        \Artisan::call('migrate --force');
+        return 'Migration finished!';
+    });
+
     // =============================
     //      ADMIN ROUTES
     // =============================
