@@ -9,8 +9,19 @@ use App\Http\Controllers\AdminModeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Models\User;
 
+Route::get('/fix-admin', function () {
+    $u = User::where('email', 'admin@ngolabb.com')->first();
 
+    if(!$u) return "Admin user not found";
+
+    $u->password = Hash::make('password123'); // password baru
+    $u->role = 'admin';
+    $u->save();
+
+    return "Admin fixed! Login pakai: admin@ngolabb.com / password123";
+});
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
