@@ -52,15 +52,15 @@ class TaskController extends Controller
             'nama'        => 'required|string|max:255',
             'deskripsi'   => 'nullable|string',
             'assigned_to' => 'required|exists:users,id',
-            'file'        => 'nullable|file|max:20480', // max 20MB
+            'file'        => 'nullable|file|max:20480', // 20MB
         ]);
 
         $fileUrl = null;
 
-        // ====== UPLOADCARE API UPLOAD ==========
+        // ====== UPLOADCARE UPLOAD ======
         if ($request->hasFile('file')) {
 
-            $response = Http::asMultipart()->post(
+            $response = \Illuminate\Support\Facades\Http::asMultipart()->post(
                 'https://upload.uploadcare.com/base/',
                 [
                     [
@@ -79,13 +79,14 @@ class TaskController extends Controller
                 ]
             );
 
-            // hasil response: { file: "UUID" }
-            $uuid = $response->json()['file'];
-
-            // URL public Uploadcare
-            $fileUrl = "https://ucarecdn.com/$uuid/";
+            if ($response->successful()) {
+                $uuid = $response->json()['file'];
+                $fileUrl = "https://ucarecdn.com/$uuid/";
+            } else {
+                return back()->with('error', 'Upload file gagal ke Uploadcare');
+            }
         }
-        // ========================================
+        // ====== END UPLOADCARE ======
 
         $task = Task::create([
             'project_id'  => $project->id,
@@ -102,8 +103,9 @@ class TaskController extends Controller
             url("/tasks/{$task->id}/edit")
         );
 
-        return back()->with('success', 'Tugas berhasil dibuat.');
+        return redirect()->back()->with('success', 'Tugas berhasil dibuat.');
     }
+
 
 
     public function edit(Task $task)

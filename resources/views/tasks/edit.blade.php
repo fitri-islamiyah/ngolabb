@@ -117,7 +117,7 @@
                                             </div>
                                             <div class="flex-1">
                                                 <p class="font-semibold text-[#0E2148] mb-2">📎 File yang telah diupload:</p>
-                                                <a href="{{ $task->file }}" target="_blank">
+                                                <a href="{{ $task->file }}" 
                                                 target="_blank"
                                                 class="inline-flex items-center space-x-2 bg-[#7965C1] hover:bg-[#483AA0] text-white px-5 py-3 rounded-xl font-medium transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,7 +225,7 @@
                                             </svg>
                                             <div class="flex-1">
                                                 <p class="font-semibold text-[#0E2148] mb-1">File saat ini:</p>
-                                                <a href="{{ $task->file }}" target="_blank">
+                                                <a href="{{ $task->file }}" 
                                                 target="_blank"
                                                 class="inline-flex items-center space-x-2 text-[#7965C1] hover:text-[#483AA0] font-medium transition-colors">
                                                     <span>Klik untuk download</span>
@@ -376,7 +376,7 @@
                                     </svg>
                                     <div class="flex-1">
                                         <p class="font-semibold text-[#0E2148] mb-2">📎 File dari Member:</p>
-                                        <a href="{{ $task->file }}" target="_blank">
+                                        <a href="{{ $task->file }}" 
                                            target="_blank"
                                            class="inline-flex items-center space-x-2 bg-gradient-to-r from-[#7965C1] to-[#483AA0] text-white px-4 py-2.5 rounded-lg font-medium hover:shadow-lg transition-all duration-200">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
