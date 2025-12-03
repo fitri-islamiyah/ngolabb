@@ -11,13 +11,10 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\UserManagementController;
 
 Route::get('/run-migrate', function () {
-    try {
-        \Artisan::call('migrate', ['--force' => true]);
-        return nl2br(Artisan::output());
-    } catch (\Exception $e) {
-        return $e->getMessage();
-    }
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Migrasi sukses!';
 });
+
 
     Route::get('/fix-cache', function () {
         Artisan::call('optimize:clear');
