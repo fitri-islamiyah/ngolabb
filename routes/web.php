@@ -88,6 +88,14 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
         \Artisan::call('migrate --force');
         return 'Migration finished!';
     });
+    Route::get('/fix-cache', function () {
+        Artisan::call('optimize:clear');
+        Artisan::call('config:clear');
+        Artisan::call('route:clear');
+        Artisan::call('view:clear');
+        return "Cache cleared!";
+    });
+
 
     // =============================
     //      ADMIN ROUTES
