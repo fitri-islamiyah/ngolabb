@@ -10,6 +10,15 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\UserManagementController;
 
+Route::get('/run-migrate', function () {
+    try {
+        \Artisan::call('migrate', ['--force' => true]);
+        return nl2br(Artisan::output());
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
+});
+
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
@@ -83,11 +92,6 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     ->middleware('auth')
     ->name('toggle.admin.mode');
 
-
-    Route::get('/run-migrate', function () {
-        \Artisan::call('migrate --force');
-        return 'Migration finished!';
-    });
     Route::get('/fix-cache', function () {
         Artisan::call('optimize:clear');
         Artisan::call('config:clear');
