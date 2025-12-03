@@ -10,19 +10,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\UserManagementController;
 
-Route::get('/run-migrate', function () {
-    Artisan::call('migrate', ['--force' => true]);
-    return 'Migrasi sukses!';
-});
 
-
-    Route::get('/fix-cache', function () {
-        Artisan::call('optimize:clear');
-        Artisan::call('config:clear');
-        Artisan::call('route:clear');
-        Artisan::call('view:clear');
-        return "Cache cleared!";
-    });
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
