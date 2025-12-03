@@ -42,7 +42,6 @@ class TaskController extends Controller
     }
 
 
-    // Simpan tugas baru + kirim notifikasi
     public function store(Request $request, Project $project)
     {
         if (auth()->user()->pivotRole($project->id) !== 'leader') {
@@ -50,29 +49,62 @@ class TaskController extends Controller
         }
 
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
+            'nama'        => 'required|string|max:255',
+            'deskripsi'   => 'nullable|string',
             'assigned_to' => 'required|exists:users,id',
+            'file'        => 'nullable|file|max:20480', // max 20MB
         ]);
+
+        $fileUrl = null;
+
+        // ====== UPLOADCARE API UPLOAD ==========
+        if ($request->hasFile('file')) {
+
+            $response = Http::asMultipart()->post(
+                'https://upload.uploadcare.com/base/',
+                [
+                    [
+                        'name'     => 'UPLOADCARE_PUB_KEY',
+                        'contents' => env('UPLOADCARE_PUBLIC_KEY'),
+                    ],
+                    [
+                        'name'     => 'UPLOADCARE_STORE',
+                        'contents' => '1', // auto store
+                    ],
+                    [
+                        'name'     => 'file',
+                        'contents' => fopen($request->file('file')->getPathname(), 'r'),
+                        'filename' => $request->file('file')->getClientOriginalName(),
+                    ],
+                ]
+            );
+
+            // hasil response: { file: "UUID" }
+            $uuid = $response->json()['file'];
+
+            // URL public Uploadcare
+            $fileUrl = "https://ucarecdn.com/$uuid/";
+        }
+        // ========================================
 
         $task = Task::create([
-            'project_id' => $project->id,
-            'nama'       => $request->nama,
-            'deskripsi'  => $request->deskripsi,
-            'assigned_to'=> $request->assigned_to,
+            'project_id'  => $project->id,
+            'nama'        => $request->nama,
+            'deskripsi'   => $request->deskripsi,
+            'assigned_to' => $request->assigned_to,
+            'file'        => $fileUrl,
         ]);
 
-        // 💬 NOTIFIKASI UNTUK MEMBER DENGAN URL EDIT TUGAS
         Notify::send(
             $request->assigned_to,
             "Tugas Baru",
             "Anda mendapat tugas baru: '{$task->nama}' pada proyek {$project->nama}",
-            url("/tasks/{$task->id}/edit") 
+            url("/tasks/{$task->id}/edit")
         );
 
-        return redirect()->route('tasks.index', $project)
-            ->with('success', 'Tugas berhasil dibuat!');
+        return back()->with('success', 'Tugas berhasil dibuat.');
     }
+
 
     public function edit(Task $task)
     {
