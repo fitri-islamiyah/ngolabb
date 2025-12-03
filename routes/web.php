@@ -19,6 +19,14 @@ Route::get('/run-migrate', function () {
     }
 });
 
+    Route::get('/fix-cache', function () {
+        Artisan::call('optimize:clear');
+        Artisan::call('config:clear');
+        Artisan::call('route:clear');
+        Artisan::call('view:clear');
+        return "Cache cleared!";
+    });
+
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
@@ -92,13 +100,6 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     ->middleware('auth')
     ->name('toggle.admin.mode');
 
-    Route::get('/fix-cache', function () {
-        Artisan::call('optimize:clear');
-        Artisan::call('config:clear');
-        Artisan::call('route:clear');
-        Artisan::call('view:clear');
-        return "Cache cleared!";
-    });
 
 
     // =============================
