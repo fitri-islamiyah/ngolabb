@@ -137,7 +137,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-center whitespace-nowrap">
                                         @if($task->file)
-                                            <a href="{{ $task->file }}" target="_blank">
+                                            <a href="{{ $task->file }}" 
                                                target="_blank"
                                                class="inline-flex items-center space-x-1 bg-gradient-to-r from-[#7965C1] to-[#483AA0] text-white px-3 py-1.5 rounded-lg font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 text-xs">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
