@@ -1,0 +1,11 @@
+[build]
+builder = "nixpacks"
+
+[phases.clear]
+nixPkgs = ["php", "php81Extensions.pdo_mysql"]
+cmds = [
+  "php artisan optimize:clear",
+  "php artisan config:clear",
+  "php artisan route:clear",
+  "php artisan view:clear"
+]
